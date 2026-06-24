@@ -68,3 +68,9 @@ Quit from the menu-bar `▦` item (or Ctrl-C in the terminal).
 - Hover window previews (needs Screen Recording).
 - Package as a signed `.app` + LaunchAgent for autostart and a stable TCC grant.
 - Config: bar side, icon size, app blacklist, "tile = app" mode.
+
+## License
+
+Licensed under the Apache License, Version 2.0 — see [LICENSE](LICENSE).
+
+Copyright 2026 Zak Fein.
