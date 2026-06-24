@@ -33,6 +33,16 @@ bar.
 - **Accessibility** permission (only for click-to-raise; bars appear without it).
   Screen Recording is **not** required (tiles are app icons, not titles).
 
+## Download
+
+Prebuilt `screendock.app` is attached to each [Release](../../releases) (built on
+a GitHub-hosted macOS runner). The build is ad-hoc-signed (no paid Apple
+Developer ID), so after downloading clear the quarantine flag before first run:
+
+```sh
+xattr -dr com.apple.quarantine /Applications/screendock.app
+```
+
 ## Build & run
 
 ```sh
