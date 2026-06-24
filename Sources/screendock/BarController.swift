@@ -359,7 +359,12 @@ final class BarController: NSObject {
 
     private func setupStatusItem() {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-        item.button?.title = "▦"
+        if let img = NSImage(systemSymbolName: "macwindow.on.rectangle", accessibilityDescription: "screendock") {
+            img.isTemplate = true
+            item.button?.image = img
+        } else {
+            item.button?.title = "▦"
+        }
 
         let menu = NSMenu()
         let header = NSMenuItem(title: "screendock", action: nil, keyEquivalent: "")
