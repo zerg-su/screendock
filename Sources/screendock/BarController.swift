@@ -24,6 +24,8 @@ final class BarController: NSObject {
     private var panels: [CGDirectDisplayID: NSPanel] = [:]
     private var signatures: [CGDirectDisplayID: String] = [:]
     private var statusItem: NSStatusItem?
+    private var statusMenu: NSMenu?
+    var onShowOverview: (() -> Void)?
 
     private let edgeMargin: CGFloat = 8
     private let gap: CGFloat = 10            // distance between the Dock and our bar
@@ -321,6 +323,11 @@ final class BarController: NSObject {
         menu.addItem(header)
         menu.addItem(.separator())
 
+        let overview = NSMenuItem(title: "Все окна…", action: #selector(showOverview), keyEquivalent: "")
+        overview.target = self
+        menu.addItem(overview)
+        menu.addItem(.separator())
+
         let raise = NSMenuItem(title: "Bring to Front", action: #selector(menuRaise(_:)), keyEquivalent: "")
         raise.target = self
         raise.representedObject = win
@@ -367,16 +374,32 @@ final class BarController: NSObject {
         }
 
         let menu = NSMenu()
-        let header = NSMenuItem(title: "screendock", action: nil, keyEquivalent: "")
+        let header = NSMenuItem(title: "ScreenDock Experimental", action: nil, keyEquivalent: "")
         header.isEnabled = false
         menu.addItem(header)
+        menu.addItem(.separator())
+        let overview = NSMenuItem(title: "Все окна…", action: #selector(showOverview), keyEquivalent: "")
+        overview.target = self
+        menu.addItem(overview)
         menu.addItem(.separator())
         let quit = NSMenuItem(title: "Quit", action: #selector(quit), keyEquivalent: "q")
         quit.target = self
         menu.addItem(quit)
 
-        item.menu = menu
+        statusMenu = menu
+        item.button?.target = self
+        item.button?.action = #selector(statusClicked)
+        item.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
+        item.button?.toolTip = "ScreenDock Experimental — Все окна (⌃⌥Пробел)"
         statusItem = item
+    }
+
+    @objc private func showOverview() { onShowOverview?() }
+
+    @objc private func statusClicked() {
+        if NSApp.currentEvent?.type == .rightMouseUp, let button = statusItem?.button {
+            statusMenu?.popUp(positioning: nil, at: NSPoint(x: 0, y: button.bounds.minY), in: button)
+        } else { showOverview() }
     }
 
     @objc private func quit() { NSApp.terminate(nil) }

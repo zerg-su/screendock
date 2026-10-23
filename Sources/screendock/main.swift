@@ -6,11 +6,16 @@ import AppKit
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let controller = BarController()
+    private let overview = WindowOverview()
+    private var shortcut: GlobalShortcut?
     private var timer: Timer?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         Permissions.ensureAccessibility()
+        controller.onShowOverview = { [weak self] in self?.overview.show() }
+        shortcut = GlobalShortcut { [weak self] in self?.overview.show() }
         controller.start()
+        overview.show()
 
         // Periodic refresh: there is no public notification for "window moved /
         // resized" or "Dock migrated to another display", so we poll.

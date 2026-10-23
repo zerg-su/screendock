@@ -3,4 +3,6 @@
 *.xcodeproj
 .DS_Store
 screendock.app/
+ScreenDock Experimental.app/
+dist/
 AppIcon.iconset/
